@@ -1,0 +1,89 @@
+// User Function
+
+
+// Copyright © 2001 Telelogic AB. All rights reserved.
+// See DOORS manuals for copying conditions.
+// Copy this file to a different location before modifying it.
+
+/*
+ Filter Absolute Number
+*/
+
+
+/*
+  V1.1
+  
+  Applies a filter using the filter.txt from C:\temp
+  must be in the form 
+  
+  int FilterObjects[]={4446, 4534, 4719} 
+  
+  A. Moghul - 29 May 2013 -   V1.1 Update to check for temp filename
+  
+*/
+
+// int Filter[]={5359,5364} //normally this is populated via user input
+
+
+
+#include <C:\\TEMP\\filter.txt>
+
+
+
+bool fileExists_ (string filename) 
+{
+    Stat s
+    s = create filename
+    if (null s) 
+        return false
+        
+    delete s
+    return true
+}
+
+
+filtering off
+
+
+
+if ( fileExists_("c:\\temp\\filter.txt"))
+{
+
+    FilterCount = sizeof(FilterObjects)
+    Filter f    = null
+    int i
+
+    for (i=0; i<FilterCount; i++)
+    {
+         int absNo=FilterObjects[i]
+         if (f==null)
+         {   
+             f=(attribute "Absolute Number" == absNo "")
+         }
+         else
+         {       
+             f=f || (attribute "Absolute Number" == absNo "")
+         }
+    }
+        
+    int iAccepted,iRejected
+    set(current,f,iAccepted,iRejected)
+
+    //print "Filter =" stringOf(current,f) "\n\n"
+    //print "Accepted: " iAccepted " -- Rejected: " iRejected "\n"
+    
+    if (iAccepted == 0)
+        infoBox "There were no matches for the specified IDs ( in C:\\Temp\\Filter.txt )"
+	else
+		infoBox "" iAccepted " Objects filtered"
+    
+    filtering on
+
+}
+else
+    infoBox "The file C:\\Temp\\Filter.txt is Missing.\n\nPlease create this file with contents similar to\n\nint FilterObjects[] = { 1739, 1743, 1749, 1762 }"
+
+
+
+
+
